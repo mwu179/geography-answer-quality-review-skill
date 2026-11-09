@@ -49,7 +49,7 @@ The Skill defines the task execution guidelines. The actual retrieval, review, a
 - The current knowledge base has limited coverage, and retrieval performance remains inconsistent.
 - LLM-based quality reviews may miss errors or produce incorrect judgments.
 - The Skill has been integrated and tested in example tasks, but its independent impact on accuracy has not been quantitatively evaluated.
-- The three Dify tools and their knowledge base are not included in this repository.
+- The three Dify Workflow definitions are included in this repository. However, model credentials and the reference knowledge base are not provided and must be configured separately.
 
 ## Project Status
 
