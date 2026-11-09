@@ -1,0 +1,237 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: knowledge_retrieval_Tool
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.2.27@d9409c7d4e1ab9358330ee1c9897c29060f739657ec11e4aaab92f4265b376b6
+    version: null
+kind: app
+site:
+  chat_color_theme: null
+  chat_color_theme_inverted: false
+  copyright: null
+  custom_disclaimer: ''
+  default_language: zh-Hans
+  description: null
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  input_placeholder: null
+  privacy_policy: null
+  show_workflow_steps: true
+  title: 高中地理参考知识检索 Tool
+  use_icon_as_answer_icon: false
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        knowledge_file_size_limit: 15
+        single_chunk_attachment_limit: 10
+        skill_file_size_limit: 50
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: knowledge-retrieval
+      id: 1793755339437-source-1793755435767-target
+      source: '1793755339437'
+      sourceHandle: source
+      target: '1793755435767'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: knowledge-retrieval
+        targetType: template-transform
+      id: 1793755435767-source-1793756791650-target
+      source: '1793755435767'
+      sourceHandle: source
+      target: '1793756791650'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: template-transform
+        targetType: end
+      id: 1793756791650-source-1793755504512-target
+      source: '1793756791650'
+      sourceHandle: source
+      target: '1793755504512'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables:
+        - default: 请输入你的高中地理问题
+          hint: ''
+          label: question
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: question
+      height: 109
+      id: '1793755339437'
+      position:
+        x: -253
+        y: 253.5
+      positionAbsolute:
+        x: -253
+        y: 253.5
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        dataset_ids: []
+        multiple_retrieval_config:
+          reranking_enable: true
+          reranking_mode: reranking_model
+          reranking_model:
+            model: qwen3-rerank
+            provider: langgenius/tongyi/tongyi
+          top_k: 4
+        query_attachment_selector: []
+        query_variable_selector:
+        - '1793755339437'
+        - question
+        retrieval_mode: multiple
+        selected: true
+        title: 知识检索
+        type: knowledge-retrieval
+      height: 52
+      id: '1793755435767'
+      position:
+        x: 67
+        y: 164.5
+      positionAbsolute:
+        x: 67
+        y: 164.5
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        outputs:
+        - value_selector:
+          - '1793756791650'
+          - output
+          value_type: string
+          variable: result
+        selected: false
+        title: 参考知识格式整理
+        type: end
+      height: 88
+      id: '1793755504512'
+      position:
+        x: 599
+        y: 384
+      positionAbsolute:
+        x: 599
+        y: 384
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        selected: false
+        template: "{% if chunks %}\r\n检索到以下候选参考知识：\r\n\r\n{% for item in chunks %}\r\
+          \n【候选参考知识 {{ loop.index }}】\r\n{{ item.content }}\r\n\r\n{% endfor %}\r\n\
+          注意：以上为检索候选结果，需要进一步判断其与用户问题是否真正匹配。\r\n{% else %}\r\n未检索到相关参考知识，当前问题无法依据知识库核验。\r\
+          \n{% endif %}"
+        title: 参考知识格式整理
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1793755435767'
+          - result
+          value_type: array[object]
+          variable: chunks
+      height: 52
+      id: '1793756791650'
+      position:
+        x: 299
+        y: 384
+      positionAbsolute:
+        x: 299
+        y: 384
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    viewport:
+      x: 634.6235189277746
+      y: -239.26373055364934
+      zoom: 2
+  rag_pipeline_variables: []

@@ -1,0 +1,257 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: answer_reviser_Tool
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.26@bdf47cb41e9062bba00d26625d2a795c1874011d8ce64bff738c44b5a31787ea
+    version: null
+kind: app
+site:
+  chat_color_theme: null
+  chat_color_theme_inverted: false
+  copyright: null
+  custom_disclaimer: ''
+  default_language: zh-Hans
+  description: null
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  input_placeholder: null
+  privacy_policy: null
+  show_workflow_steps: true
+  title: 高中地理答案修订 Tool
+  use_icon_as_answer_icon: false
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        knowledge_file_size_limit: 15
+        single_chunk_attachment_limit: 10
+        skill_file_size_limit: 50
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1793760586239-source-1793760706653-target
+      source: '1793760586239'
+      sourceHandle: source
+      target: '1793760706653'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1793760706653-source-1793760802615-target
+      source: '1793760706653'
+      sourceHandle: source
+      target: '1793760802615'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: question
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: question
+        - default: ''
+          hint: ''
+          label: ai_answer
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: ai_answer
+        - default: ''
+          hint: ''
+          label: quality_feedback
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: quality_feedback
+      height: 161
+      id: '1793760586239'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: 4e07c21e-1df1-46b8-8953-4a4751733514
+          role: system
+          text: '你是高中地理问答修订助手。
+
+
+            任务：根据用户原始问题、AI原始回答及质量审核反馈，对回答进行有针对性的修订。
+
+
+            修订规则：
+
+            1. 优先修正审核意见中有明确依据的事实错误、因果机制错误和概念混淆。
+
+            2. 补充题目要求但原回答遗漏的关键知识点。
+
+            3. 保留原回答中正确的内容，不做无意义的重写。
+
+            4. 使用适合高中生理解的简洁语言。
+
+            5. 不添加与问题无关的扩展内容。
+
+            6. 如果审核意见缺乏可靠依据，不得仅凭该意见认定原回答错误。
+
+            7. 无法确认的知识不应编造，不得声称修订结果已经通过教师审核。
+
+
+            只输出修订后的完整回答，不需要解释修订过程。'
+        - id: bb7d39d5-747d-4064-83fe-c7bdb3e6a054
+          role: user
+          text: '原始问题：
+
+            {{#1793760586239.question#}}
+
+
+            原始回答：
+
+            {{#1793760586239.ai_answer#}}
+
+
+            审核反馈：
+
+            {{#1793760586239.quality_feedback#}}
+
+
+            请根据审核反馈修订回答。'
+        reasoning_format: separated
+        selected: true
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1793760706653'
+      position:
+        x: 382
+        y: 282
+      positionAbsolute:
+        x: 382
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        outputs:
+        - value_selector:
+          - '1793760706653'
+          - text
+          value_type: string
+          variable: revised_answer
+        selected: false
+        title: 输出
+        type: end
+      height: 88
+      id: '1793760802615'
+      position:
+        x: 684
+        y: 282
+      positionAbsolute:
+        x: 684
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+  rag_pipeline_variables: []

@@ -1,0 +1,269 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: 回答质量核对 Tool
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.26@bdf47cb41e9062bba00d26625d2a795c1874011d8ce64bff738c44b5a31787ea
+    version: null
+kind: app
+site:
+  chat_color_theme: null
+  chat_color_theme_inverted: false
+  copyright: null
+  custom_disclaimer: ''
+  default_language: zh-Hans
+  description: null
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  input_placeholder: null
+  privacy_policy: null
+  show_workflow_steps: true
+  title: Quality Checker Tool
+  use_icon_as_answer_icon: false
+version: 0.7.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        knowledge_file_size_limit: 15
+        single_chunk_attachment_limit: 10
+        skill_file_size_limit: 50
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1793757339677-source-1793757657296-target
+      source: '1793757339677'
+      sourceHandle: source
+      target: '1793757657296'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1793757657296-source-1793757793965-target
+      source: '1793757657296'
+      sourceHandle: source
+      target: '1793757793965'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables:
+        - default: 请输入你的高中地理问题
+          hint: ''
+          label: question
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: question
+        - default: ''
+          hint: ''
+          label: ai_answer
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: ai_answer
+        - default: ''
+          hint: ''
+          label: reference_text
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: reference_text
+      height: 161
+      id: '1793757339677'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: deepseek-flash
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - id: bf4f0ad4-e7c7-4deb-9783-c7dbd8c4e1d5
+          role: system
+          text: '你是高中地理问答质量审核助手。
+
+
+            任务：依据提供的教师审核参考知识，对AI生成的回答进行质量核对。
+
+
+            审核规则：
+
+            1. 首先判断候选参考知识是否与用户问题的考查对象、设问要求及关键条件匹配。
+
+            2. 只使用真正匹配的参考知识，不得混合其他题目的得分点。
+
+            3. 检查AI回答的事实准确性、因果关系、概念使用及关键得分点覆盖。
+
+            4. 同义且正确的表述应视为覆盖，不要求逐字一致。
+
+            5. 不因缺少题目未要求的扩展内容而扣分。
+
+            6. 区分事实错误、关键遗漏和表达不够严谨。
+
+            7. 当没有可靠匹配的参考知识时，明确标记无法核验，不得强行给出审核结论。
+
+            8. 不得将模型自身的判断冒充教师审核结论。
+
+
+            输出格式：
+
+            参考知识匹配情况：
+
+            得分点覆盖情况：
+
+            可能存在的问题：
+
+            改进建议：
+
+
+            只进行质量核对，不直接重新生成完整答案。'
+        - id: f3b40209-bfdf-4b9d-8c84-bfcd3524325a
+          role: user
+          text: '用户问题：
+
+            {{#1793757339677.question#}}
+
+
+            待审核的AI回答：
+
+            {{#1793757339677.ai_answer#}}
+
+
+            教师审核候选参考知识：
+
+            {{#1793757339677.reference_text#}}
+
+
+            请根据上述材料进行质量核对。'
+        selected: false
+        title: 回答质量核对
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1793757657296'
+      position:
+        x: 382
+        y: 282
+      positionAbsolute:
+        x: 382
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    - data:
+        outputs:
+        - value_selector:
+          - '1793757657296'
+          - text
+          value_type: string
+          variable: quality_feedback
+        selected: true
+        title: 输出
+        type: end
+      height: 88
+      id: '1793757793965'
+      position:
+        x: 684
+        y: 282
+      positionAbsolute:
+        x: 684
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 0
+    viewport:
+      x: 147
+      y: 328
+      zoom: 1
+  rag_pipeline_variables: []
