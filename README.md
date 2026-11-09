@@ -16,6 +16,16 @@ The Skill is designed for use with a Dify Agent and three independently configur
 - **Verification Awareness:** Distinguish between knowledge-base-supported reviews and general LLM judgments.
 - **Tool Usage Control:** Limit repeated retrieval attempts to avoid unnecessary tool calls.
 
+## Setup & Usage
+
+1. Download or clone this repository.
+2. Import `SKILL.md` into a Dify Agent as a Skill.
+3. Use the workflow definitions in `workflows/` to configure the three tools in Dify. Depending on the Dify version, the YAML files may require adaptation or reconfiguration before import.
+4. Configure your own LLM provider and reference knowledge base. Rebind the knowledge retrieval node to your dataset.
+5. Add the three tools to the Agent and test the review-and-revision process.
+
+**Note:** The repository contains the Skill and workflow definitions, but it is not a fully configured, ready-to-run application.
+
 ## Agent Integration
 
 The Skill works alongside three Dify Workflow tools:
